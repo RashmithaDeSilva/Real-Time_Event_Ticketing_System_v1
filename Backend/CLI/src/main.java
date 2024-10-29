@@ -1,6 +1,8 @@
 package src;
 
 
+import src.db.MySQLConnection;
+import java.sql.Connection;
 import java.util.Scanner;
 
 
@@ -49,26 +51,35 @@ public class main {
         System.out.println("""
         ===== Real-Time Event Ticketing System =====
         1. Configure System Parameters
-        2. Start Ticket Handling
-        3. Stop Ticket Handling
-        4. View Real-Time Ticket Status
-        5. View Sales Log
-        6. Exit
+        2. Add/Remove Vendors
+        3. Set Ticket Types and Prices
+        4. Start Ticket Handling
+        5. Stop Ticket Handling
+        6. View Real-Time Ticket Status by Vendor and Type
+        7. View Sales Log
+        8. Exit
         ============================================
         """);
         return getUserInputInt("Please select an option (1-6):> ");
     }
 
+    private void configureSystemParameters() {
+
+    }
+
     // Main method
     public static void main(String[] args) {
+        Connection connection = MySQLConnection.getInstance().getConnection();
         main main = new main();
+        boolean exit = true;
 
-        while (true) {
+        while (exit) {
             switch (main.mainMenu()) {
                 case -1:    // For invalid input skip
                     break;
 
                 case 1:     // 1. Configure System Parameters
+                    main.configureSystemParameters();
                     break;
 
                 case 2:     // 2. Start Ticket Handling
@@ -84,6 +95,7 @@ public class main {
                     break;
 
                 case 6:     // 6. Exit
+                    exit = false;
                     break;
 
                 default:
