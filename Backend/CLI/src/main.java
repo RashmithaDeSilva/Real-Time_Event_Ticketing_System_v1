@@ -1,6 +1,5 @@
 package src;
 
-
 import src.db.MySQLConnection;
 import java.sql.Connection;
 import java.util.Scanner;
@@ -51,13 +50,24 @@ public class main {
         System.out.println("""
         ===== Real-Time Event Ticketing System =====
         1. Configure System Parameters
-        2. Add/Remove Vendors
-        3. Set Ticket Types and Prices
-        4. Start Ticket Handling
-        5. Stop Ticket Handling
-        6. View Real-Time Ticket Status by Vendor and Type
-        7. View Sales Log
-        8. Exit
+        2. Manage Vendors
+        3. Manage Tickets
+        4. Monitor Real-Time Status
+        5. View Sales Log
+        0. Exit
+        ============================================
+        """);
+        return getUserInputInt("Please select an option (1-6):> ");
+    }
+
+    // Configure system parameters menu
+    private int configureSystemParametersMenu() {
+        System.out.println("""
+        ===== Real-Time Event Ticketing System =====
+        1. Total Ticket Update
+        2. Tickets Released Update
+        3. Back to Main Menu
+        0. Exit
         ============================================
         """);
         return getUserInputInt("Please select an option (1-6):> ");
@@ -78,6 +88,10 @@ public class main {
                 case -1:    // For invalid input skip
                     break;
 
+                case 0:     // 0. Exit
+                    exit = false;
+                    break;
+
                 case 1:     // 1. Configure System Parameters
                     main.configureSystemParameters();
                     break;
@@ -92,10 +106,6 @@ public class main {
                     break;
 
                 case 5:     // Inject language or reference
-                    break;
-
-                case 6:     // 6. Exit
-                    exit = false;
                     break;
 
                 default:
