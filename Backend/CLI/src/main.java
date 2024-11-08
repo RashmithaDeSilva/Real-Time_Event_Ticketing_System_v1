@@ -8,7 +8,11 @@ import java.util.Scanner;
 
 public class main {
     // To get inputs
-    Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
+
+    // Database connection
+    private final Connection connection = MySQLConnection.getInstance().getConnection();
+
 
     // Get integer user inputs
     private int getUserInputInt(String prompt) {
@@ -50,26 +54,45 @@ public class main {
     private int mainMenu() {
         System.out.println("""
         ===== Real-Time Event Ticketing System =====
-        1. Configure System Parameters
-        2. Add/Remove Vendors
-        3. Set Ticket Types and Prices
-        4. Start Ticket Handling
-        5. Stop Ticket Handling
-        6. View Real-Time Ticket Status by Vendor and Type
-        7. View Sales Log
-        8. Exit
+        1. System Configuration
+        2. Manage Vendors
+        3. Manage Tickets
+        4. Monitor Real-Time Status
+        5. Sales Log
+        6. Exit
         ============================================
         """);
         return getUserInputInt("Please select an option (1-6):> ");
     }
 
-    private void configureSystemParameters() {
+    // 1. System Configuration
+    private void systemConfiguration() {
 
     }
 
+    // 2. Manage Vendors
+    private void manageVendors() {
+
+    }
+
+    // 3. Manage Tickets
+    private void manageTickets() {
+
+    }
+
+    // 4. Monitor Real-Time Status
+    private void monitorRealTimeStatus() {
+
+    }
+
+    // 5. Sales Log
+    private void salesLog() {
+
+    }
+
+
     // Main method
     public static void main(String[] args) {
-        Connection connection = MySQLConnection.getInstance().getConnection();
         main main = new main();
         boolean exit = true;
 
@@ -78,20 +101,24 @@ public class main {
                 case -1:    // For invalid input skip
                     break;
 
-                case 1:     // 1. Configure System Parameters
-                    main.configureSystemParameters();
+                case 1:     // 1. System Configuration
+                    main.systemConfiguration();
                     break;
 
-                case 2:     // 2. Start Ticket Handling
+                case 2:     // 2. Manage Vendors
+                    main.manageVendors();
                     break;
 
-                case 3:     // 3. Stop Ticket Handling
+                case 3:     // 3. Manage Tickets
+                    main.manageTickets();
                     break;
 
-                case 4:     // 4. View Real-Time Ticket Status
+                case 4:     // 4. Monitor Real-Time Status
+                    main.monitorRealTimeStatus();
                     break;
 
-                case 5:     // Inject language or reference
+                case 5:     // 5. Sales Log
+                    main.salesLog();
                     break;
 
                 case 6:     // 6. Exit
