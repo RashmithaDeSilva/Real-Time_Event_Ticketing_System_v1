@@ -1,6 +1,5 @@
 package src;
 
-
 import src.db.MySQLConnection;
 import java.sql.Connection;
 import java.util.Scanner;
@@ -54,19 +53,32 @@ public class main {
     private int mainMenu() {
         System.out.println("""
         ===== Real-Time Event Ticketing System =====
-        1. System Configuration
+        1. Configure System Parameters
         2. Manage Vendors
         3. Manage Tickets
         4. Monitor Real-Time Status
-        5. Sales Log
-        6. Exit
+        5. View Sales Log
+        0. Exit
+        ============================================
+        """);
+        return getUserInputInt("Please select an option (1-6):> ");
+    }
+
+    // Configure system parameters menu
+    private int configureSystemParametersMenu() {
+        System.out.println("""
+        ===== Real-Time Event Ticketing System =====
+        1. Total Ticket Update
+        2. Tickets Released Update
+        3. Back to Main Menu
+        0. Exit
         ============================================
         """);
         return getUserInputInt("Please select an option (1-6):> ");
     }
 
     // 1. System Configuration
-    private void systemConfiguration() {
+    private void configureSystemParameters() {
 
     }
 
@@ -101,8 +113,12 @@ public class main {
                 case -1:    // For invalid input skip
                     break;
 
-                case 1:     // 1. System Configuration
-                    main.systemConfiguration();
+                case 0:     // 0. Exit
+                    exit = false;
+                    break;
+
+                case 1:     // 1. Configure System Parameters
+                    main.configureSystemParameters();
                     break;
 
                 case 2:     // 2. Manage Vendors
@@ -119,10 +135,6 @@ public class main {
 
                 case 5:     // 5. Sales Log
                     main.salesLog();
-                    break;
-
-                case 6:     // 6. Exit
-                    exit = false;
                     break;
 
                 default:
