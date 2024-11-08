@@ -1,10 +1,9 @@
 package realtime_event_ticketing_system.cli;
 
+import java.sql.Connection;
 import realtime_event_ticketing_system.cli.controllers.*;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
 import realtime_event_ticketing_system.cli.util.UserInputGetCollection;
-
-import java.sql.Connection;
 
 
 public class Main {
@@ -29,6 +28,7 @@ public class Main {
     // 5. Sales Log
     private final SalesLogController slc = new SalesLogController();
 
+
     // Main menu
     private int mainMenu() {
         System.out.println("""
@@ -46,6 +46,7 @@ public class Main {
 
     public static void main(String[] args) {
         Main main = new Main();
+        System.out.println(main.connection != null ? "Database connected successfully." : "");
         boolean exit = true;
 
         while (exit) {

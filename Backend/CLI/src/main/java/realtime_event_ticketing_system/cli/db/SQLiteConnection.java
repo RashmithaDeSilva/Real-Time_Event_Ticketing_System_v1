@@ -9,22 +9,22 @@ public class SQLiteConnection {
     private static SQLiteConnection instance;
     private Connection connection;
 
-    // Private constructor for single architected
     private SQLiteConnection() {
-        // Database credentials
-        String url = "jdbc:sqlite:realtime_event_ticketing_system_db.db"; // DB URL
+        connect();
+    }
+
+    private void connect() {
+        String url = "jdbc:sqlite:realtime_event_ticketing_system_db.db";
 
         try {
-            // Connecting with database
             this.connection = DriverManager.getConnection(url);
-            System.out.println("Database connected successfully.");
+//            System.out.println("Database connected successfully.");
 
         } catch (SQLException e) {
             System.out.println("Error connecting to database: " + e.getMessage());
         }
     }
 
-    // Get single instance
     public static SQLiteConnection getInstance() {
         if (instance == null) {
             instance = new SQLiteConnection();
@@ -32,8 +32,15 @@ public class SQLiteConnection {
         return instance;
     }
 
-    // Get connection
     public Connection getConnection() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                connect(); // Reconnect if the connection is closed
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return connection;
     }
 }
