@@ -1,8 +1,11 @@
 package realtime_event_ticketing_system.cli;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+
 import realtime_event_ticketing_system.cli.controllers.*;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
+import realtime_event_ticketing_system.cli.util.TableFormatter;
 import realtime_event_ticketing_system.cli.util.UserInputGetCollection;
 
 
@@ -17,15 +20,12 @@ public class Main {
     private final ConfigureSystemParametersController csp = new ConfigureSystemParametersController();
 
     // 2. Manage Vendors
-    private final ManageVendorsController mvc = new ManageVendorsController();
+    private final VendorManagementController mvc = new VendorManagementController();
 
     // 3. Manage Tickets
-    private final ManageTicketsController mt = new ManageTicketsController();
+    private final TicketManagementController mt = new TicketManagementController();
 
-    // 4. Monitor Real-Time Status
-    private final MonitorRealTimeStatusController mst = new MonitorRealTimeStatusController();
-
-    // 5. Sales Log
+    // 4. Sales Log
     private final SalesLogController slc = new SalesLogController();
 
 
@@ -34,10 +34,9 @@ public class Main {
         System.out.println("""
         ===== Real-Time Event Ticketing System =====
         1. Configure System Parameters
-        2. Manage Vendors
-        3. Manage Tickets
-        4. Monitor Real-Time Status
-        5. View Sales Log
+        2. Vendors Management
+        3. Ticket Management
+        4. View Sales Log
         0. Exit
         ============================================
         """);
@@ -48,6 +47,14 @@ public class Main {
         Main main = new Main();
         System.out.println(main.connection != null ? "Database connected successfully." : "");
         boolean exit = true;
+
+        // Correctly initializing arrays
+//        String[] columns = new String[]{"id", "name", "description"};
+//        int[] columnWidths = new int[]{3, 5, 15};
+//        ArrayList<Object> dataset = new ArrayList<>();
+//
+//        // Creating an instance of TableFormatter with correct parameters
+//        TableFormatter tableFormatter = new TableFormatter(columns, columnWidths, dataset);
 
         while (exit) {
             System.out.println();
@@ -64,18 +71,14 @@ public class Main {
                     break;
 
                 case 2:     // 2. Manage Vendors
-                    main.mvc.manageVendors();
+                    main.mvc.vendorsManagement();
                     break;
 
                 case 3:     // 3. Manage Tickets
-                    main.mt.manageTickets();
+                    main.mt.ticketManagement();
                     break;
 
-                case 4:     // 4. Monitor Real-Time Status
-                    main.mst.monitorRealTimeStatus();
-                    break;
-
-                case 5:     // 5. Sales Log
+                case 4:     // 4. Sales Log
                     main.slc.salesLog();
                     break;
 

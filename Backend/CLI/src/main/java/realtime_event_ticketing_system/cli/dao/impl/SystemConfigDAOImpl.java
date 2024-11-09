@@ -2,13 +2,55 @@ package realtime_event_ticketing_system.cli.dao.impl;
 
 import realtime_event_ticketing_system.cli.dao.SystemConfigDAO;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 
 public class SystemConfigDAOImpl implements SystemConfigDAO {
+
+    private static SystemConfigDAOImpl instance;
+
+    private SystemConfigDAOImpl() {
+        try (Connection connection = SQLiteConnection.getInstance().getConnection();
+             Statement stmt = connection.createStatement()) {
+
+            // Create the table if it doesn't exist
+            stmt.execute("CREATE TABLE system_config (" +
+                    "    id INTEGER PRIMARY KEY," +
+                    "    config_key TEXT NOT NULL UNIQUE," +
+                    "    config_value INT NOT NULL " +
+                    ");");
+
+            // Insert default values, ignoring if they already exist
+            insertDefaultInputs("total_tickets", 50);
+            insertDefaultInputs("ticket_release_rate", 60);
+            insertDefaultInputs("customer_retrieval_rate", 60);
+            insertDefaultInputs("max_ticket_capacity", 500);
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // Public method to provide global access to the instance
+    public static SystemConfigDAOImpl getInstance() {
+        if (instance == null) {
+            instance = new SystemConfigDAOImpl();
+        }
+        return instance;
+    }
+
+    // Insert default inputs
+    private void insertDefaultInputs(String configKey, int configValue) throws SQLException {
+        String query = "INSERT  OR IGNORE INTO system_config (config_key, config_value) VALUES (?, ?)";
+
+        try (Connection connection = SQLiteConnection.getInstance().getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, configKey);
+            preparedStatement.setInt(2, configValue);
+            preparedStatement.executeUpdate();
+        }
+    }
 
     @Override
     public int findConfigValue(String configKey) throws SQLException {

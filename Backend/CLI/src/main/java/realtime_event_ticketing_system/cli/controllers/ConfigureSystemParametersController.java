@@ -12,22 +12,42 @@ public class ConfigureSystemParametersController {
     private final UserInputGetCollection uic = new UserInputGetCollection();
 
     // System config data access object
-    private final static SystemConfigDAO configDAO = new SystemConfigDAOImpl();
+    private final static SystemConfigDAO configDAO = SystemConfigDAOImpl.getInstance();
 
     // Configure system parameters menu
     private int configureSystemParametersMenu() {
         System.out.println("""
         ===== Configure System Parameters =====
-        1. Total Ticket Update
-        2. Tickets Released Update
-        3. Back to Main Menu
+        1. Show Status
+        2. Set Total Tickets
+        3. Set Ticket Release Rate
+        4. Set Customer Retrieval Rate
+        5. Set Max Ticket Capacity
+        6. Back to Main Menu
         ============================================
         """);
-        return uic.getUserInputInt("Please select an option (0-3):> ");
+        return uic.getUserInputInt("Please select an option (1-3):> ");
     }
 
-    // 1. Total Ticket Update
-    private void totalTicketUpdate() {
+    // 1. Show Status
+    private void showStatus() {
+        try {
+            System.out.println(
+                    "\n===== Show Status =====\n" +
+                            "Tickets Total Right Now: " +
+                            configDAO.findConfigValue("max_ticket_capacity") + "\n" +
+                            "Tickets Released Right Now (per seconds): " +
+                            configDAO.findConfigValue("ticket_release_rate") + "\n" +
+                            "============================================"
+            );
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    // 2. Set Total Tickets
+    private void setTotalTickets() {
         try {
             System.out.println(
             "\n===== Total Ticket Update =====\n" +
@@ -45,8 +65,8 @@ public class ConfigureSystemParametersController {
         }
     }
 
-    // 2. Tickets Released Update
-    private void ticketsReleasedUpdate() {
+    // 3. Set Ticket Release Rate
+    private void setTicketReleaseRate() {
         try {
             System.out.println(
                     "\n===== Tickets Released Update =====\n" +
@@ -65,6 +85,12 @@ public class ConfigureSystemParametersController {
         }
     }
 
+    // 4. Set Customer Retrieval Rate
+    private void setCustomerRetrievalRate() {}
+
+    // 5. Set Max Ticket Capacity
+    private void setMaxTicketCapacity() {}
+
     // System Configuration
     public void configureSystemParameters() {
         boolean exit = true;
@@ -75,15 +101,27 @@ public class ConfigureSystemParametersController {
                 case -1:    // For invalid input skip
                     break;
 
-                case 1:     // 1. Total Ticket Update
-                    totalTicketUpdate();
+                case 1:     // 1. Show Status
+                    showStatus();
                     break;
 
-                case 2:     // 2. Tickets Released Update
-                    ticketsReleasedUpdate();
+                case 2:     // 2. Set Total Tickets
+                    setTotalTickets();
                     break;
 
-                case 3:     // 3. Back to Main Menu
+                case 3:     // 3. Set Ticket Release Rate
+                    setTicketReleaseRate();
+                    break;
+
+                case 4:     // 4. Set Customer Retrieval Rate
+                    setCustomerRetrievalRate();
+                    break;
+
+                case 5:     // 5. Set Max Ticket Capacity
+                    setMaxTicketCapacity();
+                    break;
+
+                case 6:     // 6. Back to Main Menu
                     exit = false;
                     break;
 

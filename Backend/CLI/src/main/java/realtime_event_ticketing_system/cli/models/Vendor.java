@@ -1,23 +1,20 @@
 package realtime_event_ticketing_system.cli.models;
 
-import java.util.ArrayList;
-
 
 public class Vendor {
+    private int id;
     private String vendorName;
-    private String password;
-    private ArrayList<Ticket> tickets;
-
+    private Ticket ticket;
 
     // Nun argument constructor
     public Vendor() {
     }
 
     // Full argument constructor
-    public Vendor(String vendorName, String password, ArrayList<Ticket> tickets) {
+    public Vendor(int id, String vendorName, Ticket ticket) {
+        this.id = id;
         this.vendorName = vendorName;
-        this.password = password;
-        this.tickets = tickets;
+        this.ticket = ticket;
     }
 
     // Get vendor name
@@ -30,36 +27,23 @@ public class Vendor {
         this.vendorName = vendorName;
     }
 
-    // Get tickets
-    public ArrayList<Ticket> getTickets() {
-        return tickets;
+    // Get id
+    public int getId() {
+        return id;
     }
 
-    // Set tickets
-    public void setTickets(ArrayList<Ticket> tickets) {
-        this.tickets = tickets;
+    // Set id
+    public void setId(int id) {
+        this.id = id;
     }
 
-    // Add ticket
-    public void addTicket(Ticket ticket) {
-        if (tickets != null) {
-            tickets.add(ticket);
-
-        } else {
-            tickets = new ArrayList<>();
-            tickets.add(ticket);
-        }
+    // Get ticket
+    public Ticket getTicket() {
+        return ticket;
     }
 
-    // Remove ticket
-    public void removeTicket(Ticket ticket) {
-        if (tickets != null) {
-            tickets.remove(ticket);
-        }
-    }
-
-    // Set password
-    public void setPassword(String password) {
-        this.password = password;
+    // Set ticket
+    public void setTicket(Ticket ticket) {
+        this.ticket = ticket;
     }
 }
