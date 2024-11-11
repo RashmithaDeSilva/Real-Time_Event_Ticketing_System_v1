@@ -2,7 +2,7 @@
 PRAGMA foreign_keys = ON;
 
 
-CREATE TABLE system_config (
+CREATE TABLE IF NOT EXISTS system_config (
     id INTEGER PRIMARY KEY,
     config_key TEXT NOT NULL UNIQUE,
     config_value INT NOT NULL  -- Use INT if values are strictly integers, or TEXT for flexibility

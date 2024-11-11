@@ -34,11 +34,15 @@ public class ConfigureSystemParametersController {
         try {
             System.out.println(
                     "\n===== Show Status =====\n" +
-                            "Tickets Total Right Now: " +
-                            configDAO.findConfigValue("max_ticket_capacity") + "\n" +
-                            "Tickets Released Right Now (per seconds): " +
-                            configDAO.findConfigValue("ticket_release_rate") + "\n" +
-                            "============================================"
+                    "Tickets Total: " +
+                    configDAO.findConfigValue("total_tickets") + "\n" +
+                    "Tickets Released (per seconds): " +
+                    configDAO.findConfigValue("ticket_release_rate") + "\n" +
+                    "Customer Retrieval Rate (per seconds): " +
+                    configDAO.findConfigValue("customer_retrieval_rate") + "\n" +
+                    "Max Ticket Capacity: " +
+                    configDAO.findConfigValue("max_ticket_capacity") + "\n" +
+                    "============================================"
             );
 
         } catch (SQLException e) {
@@ -50,14 +54,15 @@ public class ConfigureSystemParametersController {
     private void setTotalTickets() {
         try {
             System.out.println(
-            "\n===== Total Ticket Update =====\n" +
-            "Tickets Total Right Now: " + configDAO.findConfigValue("max_ticket_capacity")
+                "\n===== Total Ticket Update =====\n" +
+                "Tickets Total Right Now: " +
+                configDAO.findConfigValue("total_tickets")
             );
 
-            int newTickets = uic.getUserInputInt("New total tickets max capacity:> ");
+            int newTickets = uic.getUserInputInt("Set total tickets:> ");
 
             if (newTickets >= 0) {
-                configDAO.updateConfigValue("max_ticket_capacity", newTickets);
+                configDAO.updateConfigValue("total_tickets", newTickets);
             }
 
         } catch (SQLException e) {
@@ -69,12 +74,12 @@ public class ConfigureSystemParametersController {
     private void setTicketReleaseRate() {
         try {
             System.out.println(
-                    "\n===== Tickets Released Update =====\n" +
-                    "Tickets Released Right Now (per seconds): " +
-                    configDAO.findConfigValue("ticket_release_rate")
+                "\n===== Tickets Released Update =====\n" +
+                "Tickets Released Right Now (per seconds): " +
+                configDAO.findConfigValue("ticket_release_rate")
             );
 
-            int newTickets = uic.getUserInputInt("New tickets released (per seconds):> ");
+            int newTickets = uic.getUserInputInt("Set tickets released (per seconds):> ");
 
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("ticket_release_rate", newTickets);
@@ -86,10 +91,44 @@ public class ConfigureSystemParametersController {
     }
 
     // 4. Set Customer Retrieval Rate
-    private void setCustomerRetrievalRate() {}
+    private void setCustomerRetrievalRate() {
+        try {
+            System.out.println(
+                    "\n===== Customer Retrieval Rate =====\n" +
+                    "Customer Retrieval Rate Right Now (per seconds): " +
+                    configDAO.findConfigValue("customer_retrieval_rate")
+            );
+
+            int newTickets = uic.getUserInputInt("Set customer retrieval rate (per seconds):> ");
+
+            if (newTickets >= 0) {
+                configDAO.updateConfigValue("customer_retrieval_rate", newTickets);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     // 5. Set Max Ticket Capacity
-    private void setMaxTicketCapacity() {}
+    private void setMaxTicketCapacity() {
+        try {
+            System.out.println(
+                "\n===== Max Ticket Capacity =====\n" +
+                "Max Ticket Capacity Right Now: " +
+                configDAO.findConfigValue("max_ticket_capacity")
+            );
+
+            int newTickets = uic.getUserInputInt("Set max ticket capacity:> ");
+
+            if (newTickets >= 0) {
+                configDAO.updateConfigValue("max_ticket_capacity", newTickets);
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     // System Configuration
     public void configureSystemParameters() {

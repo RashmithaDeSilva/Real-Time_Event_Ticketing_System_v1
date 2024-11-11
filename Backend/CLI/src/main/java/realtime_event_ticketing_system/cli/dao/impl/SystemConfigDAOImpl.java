@@ -14,7 +14,7 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
              Statement stmt = connection.createStatement()) {
 
             // Create the table if it doesn't exist
-            stmt.execute("CREATE TABLE system_config (" +
+            stmt.execute("CREATE TABLE IF NOT EXISTS system_config (" +
                     "    id INTEGER PRIMARY KEY," +
                     "    config_key TEXT NOT NULL UNIQUE," +
                     "    config_value INT NOT NULL " +
@@ -41,7 +41,7 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
 
     // Insert default inputs
     private void insertDefaultInputs(String configKey, int configValue) throws SQLException {
-        String query = "INSERT  OR IGNORE INTO system_config (config_key, config_value) VALUES (?, ?)";
+        String query = "INSERT OR IGNORE INTO system_config (config_key, config_value) VALUES (?, ?)";
 
         try (Connection connection = SQLiteConnection.getInstance().getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -66,7 +66,7 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
                 return resultSet.getInt("config_value");
 
             } else {
-                System.out.println("No matching config key found.");
+                System.out.println(configKey + " No matching config key found.");
                 return -1;
             }
         }
