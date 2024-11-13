@@ -37,7 +37,7 @@ public class UserInputGetCollection {
     public String getUserInputString(String prompt) {
         try {
             System.out.print(prompt);
-            return scanner.nextLine();
+            return scanner.next();
 
         } catch (Exception e) {
             System.out.println("Invalid input type input expect String");

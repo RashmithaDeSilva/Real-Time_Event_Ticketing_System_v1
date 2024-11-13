@@ -2,6 +2,7 @@ package realtime_event_ticketing_system.cli.controllers;
 
 import realtime_event_ticketing_system.cli.dao.SystemConfigDAO;
 import realtime_event_ticketing_system.cli.dao.impl.SystemConfigDAOImpl;
+import realtime_event_ticketing_system.cli.models.TicketPool;
 import realtime_event_ticketing_system.cli.util.UserInputGetCollection;
 
 import java.sql.SQLException;
@@ -63,7 +64,9 @@ public class ConfigureSystemParametersController {
 
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("total_tickets", newTickets);
+                TicketPool.getInstance().setTotalTickets(newTickets);
             }
+            System.out.println("Configuration saved successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -84,6 +87,7 @@ public class ConfigureSystemParametersController {
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("ticket_release_rate", newTickets);
             }
+            System.out.println("Configuration saved successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -104,6 +108,7 @@ public class ConfigureSystemParametersController {
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("customer_retrieval_rate", newTickets);
             }
+            System.out.println("Configuration saved successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -123,7 +128,9 @@ public class ConfigureSystemParametersController {
 
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("max_ticket_capacity", newTickets);
+                TicketPool.getInstance().setMaxCapacity(newTickets);
             }
+            System.out.println("Configuration saved successfully!");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

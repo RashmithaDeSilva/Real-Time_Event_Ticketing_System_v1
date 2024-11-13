@@ -50,8 +50,6 @@ public class VendorManagementController {
     public void vendorsManagement() {
         boolean exit = true;
 
-        configDAO.getAllVendorsWithTicket();
-
         while (exit) {
             System.out.println();
             switch (manageVendorsMenu()) {

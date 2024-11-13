@@ -2,6 +2,8 @@ package realtime_event_ticketing_system.cli.dao.impl;
 
 import realtime_event_ticketing_system.cli.dao.SystemConfigDAO;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
+import realtime_event_ticketing_system.cli.models.TicketPool;
+
 import java.sql.*;
 
 
@@ -14,10 +16,10 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
              Statement stmt = connection.createStatement()) {
 
             // Create the table if it doesn't exist
-            stmt.execute("CREATE TABLE IF NOT EXISTS system_config (" +
-                    "    id INTEGER PRIMARY KEY," +
-                    "    config_key TEXT NOT NULL UNIQUE," +
-                    "    config_value INT NOT NULL " +
+            stmt.execute("CREATE TABLE IF NOT EXISTS system_config (\n" +
+                    "    id INTEGER PRIMARY KEY,\n" +
+                    "    config_key TEXT NOT NULL UNIQUE,\n" +
+                    "    config_value INT NOT NULL \n" +
                     ");");
 
             // Insert default values, ignoring if they already exist
@@ -25,6 +27,7 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
             insertDefaultInputs("ticket_release_rate", 60);
             insertDefaultInputs("customer_retrieval_rate", 60);
             insertDefaultInputs("max_ticket_capacity", 500);
+            insertDefaultInputs("system_status", 0);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

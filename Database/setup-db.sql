@@ -1,4 +1,4 @@
--- Enable foreign key constraints (needed for foreign keys to work in SQLite)
+-- Enable foreign key constraints (needed for foreign keys to work in SQLite) 
 PRAGMA foreign_keys = ON;
 
 
@@ -17,7 +17,7 @@ VALUES
 
 
 -- Table for vendors
-CREATE TABLE vendors (
+CREATE TABLE IF NOT EXISTS vendors (
     vendor_id INTEGER PRIMARY KEY AUTOINCREMENT,
     vendor_name TEXT NOT NULL,
     tickets_per_release INTEGER NOT NULL, -- Number of tickets added per release
@@ -32,31 +32,10 @@ VALUES
     ("vendor 3", 1, 30);
 
 
--- Table for customers
-CREATE TABLE customers (
-    customer_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    is_vip BOOLEAN DEFAULT 0  -- 1 if VIP, 0 otherwise
-);
-
-
--- Table for ticket pool
-CREATE TABLE ticket_pool (
-    ticket_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    vendor_id INTEGER,
-    status TEXT DEFAULT 'available', -- Status can be 'available' or 'sold'
-    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id) ON DELETE CASCADE
-);
-
-
 -- Table for sales log
-CREATE TABLE sales_log (
+CREATE TABLE IF NOT EXISTS sales_log (
     sale_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    customer_id INTEGER,
-    customer_type TEXT NOT NULL,  -- 'VIP' or 'Regular'
-    vendor_id INTEGER,
-    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (customer_id) REFERENCES customers(customer_id) ON DELETE SET NULL,
-    FOREIGN KEY (vendor_id) REFERENCES vendors(vendor_id) ON DELETE SET NULL
+    date_time TEXT NOT NULL,
+    log TEXT NOT NULL
 );
 

@@ -2,7 +2,6 @@ package realtime_event_ticketing_system.cli.dao.impl;
 
 import realtime_event_ticketing_system.cli.dao.VendorDAO;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
-import realtime_event_ticketing_system.cli.models.Ticket;
 import realtime_event_ticketing_system.cli.models.Vendor;
 
 import java.sql.*;
@@ -19,7 +18,12 @@ public class VendorDAOImpl implements VendorDAO {
         try (Statement stmt = connection.createStatement()) {
 
             // Create the table if it doesn't exist
-            stmt.execute("CREATE TABLE IF NOT EXISTS vendors (id INTEGER PRIMARY KEY AUTOINCREMENT, vendor_name VARCHAR(255) NOT NULL);");
+            stmt.execute("CREATE TABLE IF NOT EXISTS vendors (\n" +
+                    "    vendor_id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
+                    "    vendor_name TEXT NOT NULL,\n" +
+                    "    tickets_per_release INTEGER NOT NULL, \n" +
+                    "    release_rate_sec INTEGER NOT NULL  \n" +
+                    ");");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -89,6 +93,8 @@ public class VendorDAOImpl implements VendorDAO {
             while (resultSet.next()) {
                 vendor.setId(resultSet.getInt("id"));
                 vendor.setVendorName(resultSet.getString("vendor_name"));
+                vendor.setTicketsPerRelease(resultSet.getInt("tickets_per_release"));
+                vendor.setReleaseRateSec(resultSet.getInt("release_rate_sec"));
             }
 
         } catch (SQLException e) {
@@ -107,30 +113,11 @@ public class VendorDAOImpl implements VendorDAO {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                vendors.add(new Vendor(resultSet.getInt("id"),
-                        resultSet.getString("name"), null));
-            }
-
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return vendors;
-    }
-
-    @Override
-    public List<Vendor> getAllVendorsWithTicket() {
-        List<Vendor> vendors = new ArrayList<>();
-        String query = "SELECT * FROM vendors, tickets WHERE vendors.id = tickets.vendor_id;";
-
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-
-            while (resultSet.next()) {
-                System.out.println(resultSet);
-//                vendors.add(new Vendor(resultSet.getInt("id"),
-//                        resultSet.getString("name"),
-//                        new Ticket()));
+                vendors.add(new Vendor(
+                        resultSet.getInt("id"),
+                        resultSet.getString("name"),
+                        resultSet.getInt("tickets_per_release"),
+                        resultSet.getInt("release_rate_sec")));
             }
 
         } catch (SQLException e) {

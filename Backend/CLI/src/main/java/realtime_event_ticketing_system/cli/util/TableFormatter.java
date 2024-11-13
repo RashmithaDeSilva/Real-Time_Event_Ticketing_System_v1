@@ -1,6 +1,6 @@
 package realtime_event_ticketing_system.cli.util;
 
-import realtime_event_ticketing_system.cli.models.Ticket;
+import realtime_event_ticketing_system.cli.models.TicketPool;
 import realtime_event_ticketing_system.cli.models.Vendor;
 
 import java.util.ArrayList;
@@ -88,7 +88,7 @@ public class TableFormatter {
         lineSeparator();
 
         if(!dataset.isEmpty()) {
-            if (dataset.getFirst() instanceof Ticket) {
+            if (dataset.getFirst() instanceof TicketPool) {
                 printTicketRow();
 
             } else if (dataset.getLast() instanceof Vendor) {

@@ -10,5 +10,4 @@ public interface VendorDAO {
     void deleteVendor(int vendorId);
     Vendor getVendor(int vendorId);
     List<Vendor> getAllVendors();
-    List<Vendor> getAllVendorsWithTicket();
 }

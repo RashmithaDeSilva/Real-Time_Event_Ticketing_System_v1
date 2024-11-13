@@ -2,9 +2,12 @@ package realtime_event_ticketing_system.cli;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import realtime_event_ticketing_system.cli.controllers.*;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
+import realtime_event_ticketing_system.cli.models.TicketPool;
 import realtime_event_ticketing_system.cli.util.TableFormatter;
 import realtime_event_ticketing_system.cli.util.UserInputGetCollection;
 
@@ -28,6 +31,12 @@ public class Main {
     // 4. Sales Log
     private final SalesLogController slc = new SalesLogController();
 
+    // Ticket pool
+    private final TicketPool ticketPool = TicketPool.getInstance();
+
+    // Initialize ScheduledExecutorService
+    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
+
 
     // Main menu
     private int mainMenu() {
@@ -43,10 +52,14 @@ public class Main {
         return uic.getUserInputInt("Please select an option (0-5):> ");
     }
 
+
+
     public static void main(String[] args) {
         Main main = new Main();
         System.out.println(main.connection != null ? "Database connected successfully." : "");
-        boolean exit = true;
+        boolean exit = main.connection != null;
+
+
 
         // Correctly initializing arrays
 //        String[] columns = new String[]{"id", "name", "description"};
@@ -63,7 +76,8 @@ public class Main {
                     break;
 
                 case 0:     // 0. Exit
-                    exit = false;
+                    exit = !main.uic.getUserInputString("Are you sure you want to exit? (y/n):> ")
+                            .equalsIgnoreCase("y");
                     break;
 
                 case 1:     // 1. Configure System Parameters
