@@ -1,6 +1,7 @@
 package main;
 
 import main.controllers.ConfigureSystemParametersController;
+import main.controllers.VendorManagementController;
 import main.db.SQLiteConnection;
 import main.util.UserInputGetCollection;
 
@@ -19,6 +20,9 @@ public class Main {
     // 1. Configure System Parameters
     private final ConfigureSystemParametersController configureSystemParametersController = new ConfigureSystemParametersController();
 
+    // 2. Manage Vendors
+    private final VendorManagementController vendorManagementController = new VendorManagementController();
+
     // main.Main menu
     private int mainMenu() {
         System.out.println("""
@@ -32,7 +36,6 @@ public class Main {
         """);
         return userInputGetCollection.getUserInputInt("Please select an option (0-5):> ");
     }
-
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -66,11 +69,11 @@ public class Main {
                     break;
 
                 case 1:     // 1. Configure System Parameters
-//                    main.configureSystemParametersController.configureSystemParameters();
+                    main.configureSystemParametersController.configureSystemParameters();
                     break;
 
                 case 2:     // 2. Manage Vendors
-//                    main.vendorManagementController.vendorsManagement();
+                    main.vendorManagementController.vendorsManagement();
                     break;
 
                 case 3:     // 3. Manage Tickets

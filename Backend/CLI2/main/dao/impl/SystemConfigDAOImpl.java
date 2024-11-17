@@ -32,66 +32,53 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
     }
 
     // Insert default inputs
-    private void insertDefaultInputs(String configKey, int configValue) {
+    private void insertDefaultInputs(String configKey, int configValue) throws SQLException {
         String query = "INSERT OR IGNORE INTO system_config (config_key, config_value) VALUES (?, ?)";
 
-        try {
-            Connection connection = SQLiteConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        Connection connection = SQLiteConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, configKey);
-            preparedStatement.setInt(2, configValue);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        preparedStatement.setString(1, configKey);
+        preparedStatement.setInt(2, configValue);
+        preparedStatement.executeUpdate();
     }
 
     @Override
-    public int findConfigValue(String configKey) {
+    public int findConfigValue(String configKey) throws SQLException {
         String query = "SELECT config_value FROM system_config WHERE config_key = ?";
 
-        try {
-            Connection connection = SQLiteConnection.getInstance().getConnection();
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        Connection connection = SQLiteConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setString(1, configKey);
-            ResultSet resultSet = preparedStatement.executeQuery();
+        preparedStatement.setString(1, configKey);
+        ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                return resultSet.getInt("config_value");
+        if (resultSet.next()) {
+            return resultSet.getInt("config_value");
 
-            } else {
-                System.out.println(configKey + " No matching config key found.");
-                return -1;
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } else {
+            System.out.println(configKey + " No matching config key found.");
+            return -1;
         }
     }
 
     @Override
-    public void updateConfigValue(String configKey, int configValue) {
+    public void updateConfigValue(String configKey, int configValue) throws SQLException {
         String query = "UPDATE system_config SET config_value = ? WHERE config_key = ?";
 
-        try (Connection connection = SQLiteConnection.getInstance().getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        Connection connection = SQLiteConnection.getInstance().getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
 
-            preparedStatement.setInt(1, configValue);
-            preparedStatement.setString(2, configKey);
+        preparedStatement.setInt(1, configValue);
+        preparedStatement.setString(2, configKey);
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
 //                System.out.println("Config value updated successfully.");
 
-            } else {
-                System.out.println("No matching config key found.");
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+        } else {
+            System.out.println("No matching config key found.");
         }
     }
+
 }
