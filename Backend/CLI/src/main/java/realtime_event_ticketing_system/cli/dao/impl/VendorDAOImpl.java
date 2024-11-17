@@ -91,7 +91,7 @@ public class VendorDAOImpl implements VendorDAO {
              ResultSet resultSet = statement.executeQuery(query)) {
 
             while (resultSet.next()) {
-                vendor.setId(resultSet.getInt("id"));
+                vendor.setId(resultSet.getInt("vendor_id"));
                 vendor.setVendorName(resultSet.getString("vendor_name"));
                 vendor.setTicketsPerRelease(resultSet.getInt("tickets_per_release"));
                 vendor.setReleaseRateSec(resultSet.getInt("release_rate_sec"));
@@ -114,16 +114,16 @@ public class VendorDAOImpl implements VendorDAO {
 
             while (resultSet.next()) {
                 vendors.add(new Vendor(
-                        resultSet.getInt("id"),
-                        resultSet.getString("name"),
+                        resultSet.getInt("vendor_id"),
+                        resultSet.getString("vendor_name"),
                         resultSet.getInt("tickets_per_release"),
-                        resultSet.getInt("release_rate_sec")));
+                        resultSet.getInt("release_rate_sec")
+                ));
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
         return vendors;
     }
 }

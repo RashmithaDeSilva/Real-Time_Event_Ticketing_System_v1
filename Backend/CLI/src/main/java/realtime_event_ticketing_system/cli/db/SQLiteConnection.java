@@ -18,7 +18,6 @@ public class SQLiteConnection {
 
         try {
             this.connection = DriverManager.getConnection(url);
-//            System.out.println("Database connected successfully.");
 
         } catch (SQLException e) {
             System.out.println("Error connecting to database: " + e.getMessage());
@@ -39,7 +38,7 @@ public class SQLiteConnection {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return connection;
     }

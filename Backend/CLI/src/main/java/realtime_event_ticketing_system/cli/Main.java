@@ -1,42 +1,31 @@
 package realtime_event_ticketing_system.cli;
 
 import java.sql.Connection;
-import java.util.ArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 import realtime_event_ticketing_system.cli.controllers.*;
 import realtime_event_ticketing_system.cli.db.SQLiteConnection;
-import realtime_event_ticketing_system.cli.models.TicketPool;
-import realtime_event_ticketing_system.cli.util.TableFormatter;
 import realtime_event_ticketing_system.cli.util.UserInputGetCollection;
 
 
 public class Main {
-    // Database connection
-    private final Connection connection = SQLiteConnection.getInstance().getConnection();
 
     // To get inputs
-    private final UserInputGetCollection uic = new UserInputGetCollection();
+    private final UserInputGetCollection userInputGetCollection = new UserInputGetCollection();
 
     // 1. Configure System Parameters
-    private final ConfigureSystemParametersController csp = new ConfigureSystemParametersController();
+    private final ConfigureSystemParametersController configureSystemParametersController = new ConfigureSystemParametersController();
 
     // 2. Manage Vendors
-    private final VendorManagementController mvc = new VendorManagementController();
+    private final VendorManagementController vendorManagementController = new VendorManagementController();
 
     // 3. Manage Tickets
-    private final TicketManagementController mt = new TicketManagementController();
+    private final TicketManagementController ticketManagementController = new TicketManagementController();
 
     // 4. Sales Log
-    private final SalesLogController slc = new SalesLogController();
+    private final SalesLogController salesLogController = new SalesLogController();
 
-    // Ticket pool
-    private final TicketPool ticketPool = TicketPool.getInstance();
-
-    // Initialize ScheduledExecutorService
-    private final ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
-
+    // Database connection
+    private final Connection connection = SQLiteConnection.getInstance().getConnection();
 
     // Main menu
     private int mainMenu() {
@@ -49,25 +38,13 @@ public class Main {
         0. Exit
         ============================================
         """);
-        return uic.getUserInputInt("Please select an option (0-5):> ");
+        return userInputGetCollection.getUserInputInt("Please select an option (0-5):> ");
     }
-
-
 
     public static void main(String[] args) {
         Main main = new Main();
         System.out.println(main.connection != null ? "Database connected successfully." : "");
         boolean exit = main.connection != null;
-
-
-
-        // Correctly initializing arrays
-//        String[] columns = new String[]{"id", "name", "description"};
-//        int[] columnWidths = new int[]{3, 5, 15};
-//        ArrayList<Object> dataset = new ArrayList<>();
-//
-//        // Creating an instance of TableFormatter with correct parameters
-//        TableFormatter tableFormatter = new TableFormatter(columns, columnWidths, dataset);
 
         while (exit) {
             System.out.println();
@@ -76,24 +53,25 @@ public class Main {
                     break;
 
                 case 0:     // 0. Exit
-                    exit = !main.uic.getUserInputString("Are you sure you want to exit? (y/n):> ")
+                    exit = !main.userInputGetCollection.getUserInputString("Are you sure you want to exit? (y/n):> ")
                             .equalsIgnoreCase("y");
+                    if (!exit) main.ticketManagementController.stopSystem();
                     break;
 
                 case 1:     // 1. Configure System Parameters
-                    main.csp.configureSystemParameters();
+                    main.configureSystemParametersController.configureSystemParameters();
                     break;
 
                 case 2:     // 2. Manage Vendors
-                    main.mvc.vendorsManagement();
+                    main.vendorManagementController.vendorsManagement();
                     break;
 
                 case 3:     // 3. Manage Tickets
-                    main.mt.ticketManagement();
+                    main.ticketManagementController.ticketManagement();
                     break;
 
                 case 4:     // 4. Sales Log
-                    main.slc.salesLog();
+                    main.salesLogController.salesLog();
                     break;
 
                 default:

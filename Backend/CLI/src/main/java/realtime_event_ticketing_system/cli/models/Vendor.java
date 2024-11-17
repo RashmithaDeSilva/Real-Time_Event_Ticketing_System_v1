@@ -19,10 +19,11 @@ public class Vendor implements Runnable {
     public void run() {
         try {
             checkVendorDetails();
-            
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        System.out.println(vendorName);
         TicketPool.getInstance().addTickets(ticketsPerRelease);
         SalesLogDAOImpl.getInstance().addLog("Add " + ticketsPerRelease +
                 " tickets into ticket pool [ID - " + id + "] Vendor " + vendorName);
@@ -31,7 +32,10 @@ public class Vendor implements Runnable {
     // Method to start vendor's periodic ticket release
     public void start(ScheduledExecutorService executorService) throws SQLException {
         checkVendorDetails();
-        executorService.scheduleAtFixedRate(this, 0, releaseRateSec, TimeUnit.SECONDS);
+        int globuleReleaseRateSec = SystemConfigDAOImpl.getInstance()
+                .findConfigValue("ticket_release_rate");
+        executorService.scheduleAtFixedRate(this, 0,
+                Math.max(globuleReleaseRateSec, releaseRateSec), TimeUnit.SECONDS);
     }
 
     private void checkVendorDetails() throws SQLException {

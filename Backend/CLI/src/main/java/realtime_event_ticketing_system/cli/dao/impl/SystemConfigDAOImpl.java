@@ -87,7 +87,7 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
-                System.out.println("Config value updated successfully.");
+//                System.out.println("Config value updated successfully.");
 
             } else {
                 System.out.println("No matching config key found.");

@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS vendors (
 
 INSERT OR IGNORE INTO vendors (vendor_name, tickets_per_release, release_rate_sec)
 VALUES 
-    ("vendor 1", 5, 60),
-    ("vendor 2", 2, 120),
+    ("vendor 1", 5, 120),
+    ("vendor 2", 2, 60),
     ("vendor 3", 1, 30);
 
 

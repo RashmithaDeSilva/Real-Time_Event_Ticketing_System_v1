@@ -86,6 +86,7 @@ public class ConfigureSystemParametersController {
 
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("ticket_release_rate", newTickets);
+                new TicketManagementController().restartSystemForVendors();
             }
             System.out.println("Configuration saved successfully!");
 
@@ -107,6 +108,7 @@ public class ConfigureSystemParametersController {
 
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("customer_retrieval_rate", newTickets);
+                new TicketManagementController().restartSystemForCustomers();
             }
             System.out.println("Configuration saved successfully!");
 
