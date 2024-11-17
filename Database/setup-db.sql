@@ -19,7 +19,7 @@ VALUES
 -- Table for vendors
 CREATE TABLE IF NOT EXISTS vendors (
     vendor_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    vendor_name TEXT NOT NULL,
+    vendor_name TEXT UNIQUE NOT NULL,
     tickets_per_release INTEGER NOT NULL, -- Number of tickets added per release
     release_rate_sec INTEGER NOT NULL  -- Frequency of ticket release in seconds
 );
@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS vendors (
 
 INSERT OR IGNORE INTO vendors (vendor_name, tickets_per_release, release_rate_sec)
 VALUES 
-    ("vendor 1", 5, 120),
+    ("vendor 1", 1, 30),
     ("vendor 2", 2, 60),
-    ("vendor 3", 1, 30);
+    ("vendor 3", 3, 120);
 
 
 -- Table for sales log
