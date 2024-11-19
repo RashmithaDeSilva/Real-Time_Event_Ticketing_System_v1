@@ -40,12 +40,12 @@ public class ConfigureSystemParametersApi {
         data.put("total_tickets", systemConfigureService.findConfigValue("total_tickets"));
 
         return new ResponseEntity<>(new StandardResponse(200,
-                "Configure System Parameters Status",
+                "Total Tickets Status",
                 data), HttpStatus.OK);
     }
 
     // Update configure system parameters
-    @PatchMapping("/updatesystemconfigs")
+    @PatchMapping("/update")
     public ResponseEntity<StandardResponse> updateSystemConfigs(
             @RequestBody SystemConfigRequestDto systemConfigRequestDto) {
 
