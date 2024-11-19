@@ -1,5 +1,6 @@
 package com.realtimeeventticketingsystem.service.impl;
 
+import com.realtimeeventticketingsystem.dto.response.ResponseSystemConfigDto;
 import com.realtimeeventticketingsystem.repo.SystemConfigureRepo;
 import com.realtimeeventticketingsystem.service.SystemConfigureService;
 import lombok.RequiredArgsConstructor;
@@ -19,8 +20,17 @@ public class SystemConfigureServiceImpl implements SystemConfigureService {
     }
 
     @Override
+    public ResponseSystemConfigDto findAllConfig() {
+        return new ResponseSystemConfigDto(
+                systemConfigureRepo.findByConfigKey("total_tickets"),
+                systemConfigureRepo.findByConfigKey("ticket_release_rate"),
+                systemConfigureRepo.findByConfigKey("customer_retrieval_rate"),
+                systemConfigureRepo.findByConfigKey("max_ticket_capacity"));
+    }
+
+    @Override
     @Transactional
-    public boolean updateConfigValue(String configKey, int configValue) {
-        return systemConfigureRepo.updateConfigValueUsingKey(configKey, configValue) == 1;
+    public void updateConfigValue(String configKey, int configValue) {
+        systemConfigureRepo.updateConfigValueUsingKey(configKey, configValue);
     }
 }

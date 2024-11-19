@@ -12,5 +12,5 @@ public interface SystemConfigureRepo extends JpaRepository<SystemConfig, Integer
 
     @Modifying
     @Query(value = "UPDATE system_config SET config_value = ?2 WHERE config_key = ?1", nativeQuery = true)
-    int updateConfigValueUsingKey(String config_key, int config_value);
+    void updateConfigValueUsingKey(String config_key, int config_value);
 }

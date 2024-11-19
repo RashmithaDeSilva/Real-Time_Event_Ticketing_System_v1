@@ -22,15 +22,9 @@ public class ConfigureSystemParametersApi {
     // Get configure system parameters status
     @GetMapping("/status")
     public ResponseEntity<StandardResponse> systemStatus() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("total_tickets", systemConfigureService.findConfigValue("total_tickets"));
-        data.put("ticket_release_rate", systemConfigureService.findConfigValue("ticket_release_rate"));
-        data.put("customer_retrieval_rate", systemConfigureService.findConfigValue("customer_retrieval_rate"));
-        data.put("max_ticket_capacity", systemConfigureService.findConfigValue("max_ticket_capacity"));
-
         return new ResponseEntity<>(new StandardResponse(200,
                 "Configure System Parameters Status",
-                data), HttpStatus.OK);
+                systemConfigureService.findAllConfig()), HttpStatus.OK);
     }
 
     // Get total tickets
