@@ -74,7 +74,7 @@ public class TicketPool {
         return false;
     }
 
-    public void reloadSetMaxCapacity(int maxCapacity) {
+    public void reloadSetMaxCapacity() {
         try {
             ticketPool.setMaxCapacity(configDAO.findConfigValue("max_ticket_capacity"));
 
@@ -83,7 +83,7 @@ public class TicketPool {
         }
     }
 
-    public void reloadSetTotalTickets(int maxCapacity) {
+    public void reloadSetTotalTickets() {
         try {
             ticketPool.setTotalTickets(configDAO.findConfigValue("total_tickets"));
 

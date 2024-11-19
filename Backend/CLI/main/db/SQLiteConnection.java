@@ -15,7 +15,7 @@ public class SQLiteConnection {
     }
 
     private void connect() {
-        String url = "jdbc:sqlite:realtime_event_ticketing_system_db.db";
+        String url = "jdbc:sqlite:../realtime_event_ticketing_system_db.db";
 
         try {
             this.connection = DriverManager.getConnection(url);

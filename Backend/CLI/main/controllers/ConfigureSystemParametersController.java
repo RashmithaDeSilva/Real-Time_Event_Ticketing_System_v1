@@ -64,7 +64,7 @@ public class ConfigureSystemParametersController {
 
             if (newTickets >= 0 && newTickets <= maxCapacity) {
                 configDAO.updateConfigValue("total_tickets", newTickets);
-                TicketPool.getInstance().reloadSetTotalTickets(newTickets);
+                TicketPool.getInstance().reloadSetTotalTickets();
                 System.out.println("Configuration saved successfully!");
 
             } else {
@@ -139,7 +139,7 @@ public class ConfigureSystemParametersController {
 
             if (newTickets >= 0) {
                 configDAO.updateConfigValue("max_ticket_capacity", newTickets);
-                TicketPool.getInstance().reloadSetMaxCapacity(newTickets);
+                TicketPool.getInstance().reloadSetMaxCapacity();
                 System.out.println("Configuration saved successfully!");
 
             } else {

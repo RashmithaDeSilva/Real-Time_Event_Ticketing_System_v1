@@ -9,6 +9,7 @@ import main.models.Vendor;
 import main.util.UserInputGetCollection;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -109,11 +110,35 @@ public class TicketManagementController {
 
     // Start system for customers
     public void startSystemForCustomers() throws SQLException {
-         // Schedule a new customer task at a fixed rate (retrievalRateSec)
+        ArrayList<Customer> vipCustomers = new ArrayList<>();
+        ArrayList<Customer> customers = new ArrayList<>();
+
+        // Schedule a new customer task at a fixed rate (retrievalRateSec)
         executorServiceCustomer.scheduleAtFixedRate(() -> {
             try {
-                Customer customer = new Customer();
-                new Thread(customer).start(); // Run each customer in its own thread
+                Customer customer1 = new Customer();
+                Customer customer2 = new Customer();
+
+                if (customer1.isVip()) {
+                    vipCustomers.add(customer1);
+                } else {
+                    customers.add(customer1);
+                }
+
+                if (customer2.isVip()) {
+                    vipCustomers.add(customer2);
+                } else {
+                    customers.add(customer2);
+                }
+
+                if (!vipCustomers.isEmpty()) {
+                    new Thread(vipCustomers.getFirst()).start();
+                    vipCustomers.removeFirst();
+
+                } else {
+                    new Thread(customers.getFirst()).start();
+                    customers.removeFirst();
+                }
 
             } catch (SQLException e) {
                 System.err.println("Error creating a new customer: " + e.getMessage());

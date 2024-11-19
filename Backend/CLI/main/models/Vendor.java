@@ -1,5 +1,6 @@
 package main.models;
 
+import main.controllers.TicketManagementController;
 import main.dao.impl.SalesLogDAOImpl;
 import main.dao.impl.SystemConfigDAOImpl;
 
@@ -19,15 +20,26 @@ public class Vendor implements Runnable {
     @Override
     public void run() {
         try {
-            checkVendorDetails();
+            if (configDAO.findConfigValue("system_status") == 1 ) {
+                checkVendorDetails();
+
+                TicketPool.getInstance().reloadSetMaxCapacity();
+                TicketPool.getInstance().reloadSetTotalTickets();
+
+                if (TicketPool.getInstance().addTickets(ticketsPerRelease)) {
+                    new SalesLogDAOImpl().addLog("Add " + ticketsPerRelease +
+                            " tickets into ticket pool [ID - " + id + "] Vendor " + vendorName);
+                }
+
+            } else {
+                new TicketManagementController().stopSystem();
+            }
+
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        if (TicketPool.getInstance().addTickets(ticketsPerRelease)) {
-            new SalesLogDAOImpl().addLog("Add " + ticketsPerRelease +
-                    " tickets into ticket pool [ID - " + id + "] Vendor " + vendorName);
-        }
+
     }
 
     // Method to start vendor's periodic ticket release

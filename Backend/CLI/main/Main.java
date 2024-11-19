@@ -42,7 +42,7 @@ public class Main {
         0. Exit
         ============================================
         """);
-        return userInputGetCollection.getUserInputInt("Please select an option (0-5):> ");
+        return userInputGetCollection.getUserInputInt("Please select an option (0-4):> ");
     }
 
     public static void main(String[] args) {
@@ -68,13 +68,13 @@ public class Main {
                     exit = !main.userInputGetCollection.getUserInputString(
                             "Are you sure you want to exit? (y/n):> ")
                             .equalsIgnoreCase("y");
-                    if (!exit) main.ticketManagementController.stopSystem();
-                    try {
-                        main.connection.close();
-
-                    } catch (SQLException e) {
-                        System.out.println("DB connection failed.\n" + e.getMessage());
-                    }
+//                    if (!exit) main.ticketManagementController.stopSystem();
+//                    try {
+//                        main.connection.close();
+//
+//                    } catch (SQLException e) {
+//                        System.out.println("DB connection failed.\n" + e.getMessage());
+//                    }
                     break;
 
                 case 1:     // 1. Configure System Parameters

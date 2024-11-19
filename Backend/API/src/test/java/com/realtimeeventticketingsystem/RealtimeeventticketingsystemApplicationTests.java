@@ -1,10 +1,10 @@
-package com.realtimeeventticketing.api;
+package com.realtimeeventticketingsystem;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ApiApplicationTests {
+class RealtimeeventticketingsystemApplicationTests {
 
 	@Test
 	void contextLoads() {
