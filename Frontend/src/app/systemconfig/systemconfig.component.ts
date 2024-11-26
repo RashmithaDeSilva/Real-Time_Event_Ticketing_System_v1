@@ -1,11 +1,90 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {NgIf} from '@angular/common';
+
 
 @Component({
   selector: 'app-systemconfig',
-  imports: [],
+  imports: [
+    ReactiveFormsModule,
+    NgIf
+  ],
   templateUrl: './systemconfig.component.html',
   styleUrl: './systemconfig.component.css'
 })
-export class SystemconfigComponent {
+export class SystemconfigComponent implements OnInit {
 
+  protected status: string = 'System Stop';
+  private intervalId: any;
+  protected totalTickets: number = 0;
+  protected ticketReleaseRate: number = 0;
+  protected customerRetrievalRate: number = 0;
+  protected maxTicketCapacity: number = 0;
+  protected showAlert: boolean = false;
+  protected statusColor: string = '';
+  protected statusColorForStop: string = '#d50808';
+  protected statusColorForRun: string = '#33a807';
+
+  constructor(private http: HttpClient) { }
+
+  ngOnInit(): void {
+    // Call the function every 5 seconds
+    this.intervalId = setInterval(() => {
+      this.checkSystemStatus();
+      this.checkSystemParameters();
+    }, 1000);
+  }
+
+  checkSystemStatus(): void {
+    this.http.get<any>('http://localhost:8080/api/v1/configuresystem/status')
+      .subscribe(res => {
+        if (res && res.status === 200) {
+          this.status = res.data.system_status === 1 ? "System running" : "System Stop";
+          this.statusColor = res.data.system_status === 1 ? this.statusColorForRun : this.statusColorForStop;
+        }
+      });
+  }
+
+  checkSystemParameters(): void {
+    this.http.get<any>('http://localhost:8080/api/v1/configuresystemparameters/status')
+      .subscribe(res => {
+        if (res && res.status === 200) {
+          this.totalTickets = res.data.total_tickets;
+          this.ticketReleaseRate = res.data.ticket_release_rate;
+          this.customerRetrievalRate = res.data.customer_retrieval_rate;
+          this.maxTicketCapacity = res.data.max_ticket_capacity;
+        }
+      });
+  }
+
+  form = new FormGroup({
+    totalTickets:new FormControl('', [Validators.required, Validators.max(this.maxTicketCapacity), Validators.min(0)]),
+    ticketReleaseRate:new FormControl('', [Validators.required, Validators.max(300), Validators.min(0)]),
+    customerRetrievalRate:new FormControl('', [Validators.required, Validators.max(300), Validators.min(0)]),
+    maxTicketCapacity:new FormControl('', [Validators.required, Validators.min(0)])
+  });
+
+  updateData(): void {
+    this.http.patch<any>('http://localhost:8080/api/v1/configuresystemparameters/update', {
+      total_tickets: this.form.get('totalTickets')?.value,
+      ticket_release_rate: this.form.get('ticketReleaseRate')?.value,
+      customer_retrieval_rate: this.form.get('customerRetrievalRate')?.value,
+      max_ticket_capacity: this.form.get('maxTicketCapacity')?.value
+    }).subscribe(res => {
+      if (res && res.status === 200) {
+        this.showAlert = true; // Show the success alert
+        setTimeout(() => {
+          this.showAlert = false; // Hide the alert after 3 seconds
+        }, 3000);
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    // Clear the interval when the component is destroyed
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
 }

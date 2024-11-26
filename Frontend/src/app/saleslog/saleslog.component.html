@@ -1,1 +1,18 @@
-<p>saleslog works!</p>
+<div class="container text-center mt-3">
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">Sale ID</th>
+      <th scope="col">Date and Time</th>
+      <th scope="col">Log</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let tempData of list">
+      <td>{{ tempData.id }}</td>
+      <td>{{ tempData.timeAndDate }}</td>
+      <td>{{ tempData.log }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
