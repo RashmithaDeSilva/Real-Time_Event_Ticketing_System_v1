@@ -158,12 +158,18 @@ public class VendorDAOImpl implements VendorDAO {
         return vendors;
     }
 
-    private int getVendorCount() throws SQLException {
+    @Override
+    public int getVendorCount() {
         String query = "SELECT COUNT(*) FROM vendors;";
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        if (resultSet.next()) {
-            return resultSet.getInt(1); // Get the count from the first column
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1); // Get the count from the first column
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
         }
         return 0;
     }

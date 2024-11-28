@@ -7,10 +7,8 @@ import main.models.Customer;
 import main.models.TicketPool;
 import main.models.Vendor;
 import main.util.UserInputGetCollection;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -27,10 +25,13 @@ public class TicketManagementController {
     private static final TicketPool ticketPool = TicketPool.getInstance();
 
     // Initialize ScheduledExecutorService
-    private final ScheduledExecutorService executorServiceVendor = Executors.newScheduledThreadPool(4);
+    private final ScheduledExecutorService executorServiceVendor = Executors.newScheduledThreadPool(3);
 
     // Initialize ScheduledExecutorService
     private final ScheduledExecutorService executorServiceCustomer = Executors.newScheduledThreadPool(1);
+
+    private static final ArrayList<Customer> vipCustomers = new ArrayList<>();
+    private static final ArrayList<Customer> customers = new ArrayList<>();
 
     // Constructor
     public TicketManagementController() {
@@ -104,20 +105,17 @@ public class TicketManagementController {
     // Start system for vendors
     public void startSystemForVendors() throws SQLException {
         for (Vendor v : new VendorDAOImpl().getAllVendors()) {
-            v.start(executorServiceVendor);
+            v.start(executorServiceVendor, ticketPool);
         }
     }
 
     // Start system for customers
     public void startSystemForCustomers() throws SQLException {
-        ArrayList<Customer> vipCustomers = new ArrayList<>();
-        ArrayList<Customer> customers = new ArrayList<>();
-
         // Schedule a new customer task at a fixed rate (retrievalRateSec)
         executorServiceCustomer.scheduleAtFixedRate(() -> {
             try {
-                Customer customer1 = new Customer();
-                Customer customer2 = new Customer();
+                Customer customer1 = new Customer(ticketPool);
+                Customer customer2 = new Customer(ticketPool);
 
                 if (customer1.isVip()) {
                     vipCustomers.add(customer1);

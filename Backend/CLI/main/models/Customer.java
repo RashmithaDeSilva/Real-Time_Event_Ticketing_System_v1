@@ -1,9 +1,7 @@
 package main.models;
 
-import main.controllers.TicketManagementController;
 import main.dao.impl.SalesLogDAOImpl;
 import main.dao.impl.SystemConfigDAOImpl;
-
 import java.sql.SQLException;
 import java.util.Random;
 
@@ -11,9 +9,11 @@ import java.util.Random;
 public class Customer implements Runnable {
     private final int id;
     private final boolean vip;
+    private final TicketPool ticketPool;
 
     // Constructor
-    public Customer() throws SQLException {
+    public Customer(TicketPool ticketPool) throws SQLException {
+        this.ticketPool = ticketPool;
         Random random = new Random();
         this.id = random.nextInt(100) + 1;
         this.vip = random.nextInt(2) + 1 == 1;
@@ -23,17 +23,14 @@ public class Customer implements Runnable {
     public void run() {
         try {
             if (new SystemConfigDAOImpl().findConfigValue("system_status") == 1 ) {
-                TicketPool.getInstance().reloadSetMaxCapacity();
-                TicketPool.getInstance().reloadSetTotalTickets();
+                ticketPool.reloadSetMaxCapacity();
+                ticketPool.reloadSetTotalTickets();
 
                 if (TicketPool.getInstance().removeTicket()) {
                     new SalesLogDAOImpl().addLog(vip
                             ? "Buy 1 ticket from ticket pool [ID - " + id + "] VIP Customer"
                             : "Buy 1 ticket from ticket pool [ID - " + id + "] Customer");
                 }
-
-            } else {
-                new TicketManagementController().stopSystem();
             }
 
         } catch (SQLException e) {

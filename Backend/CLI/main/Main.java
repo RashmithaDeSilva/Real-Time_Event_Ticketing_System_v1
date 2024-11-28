@@ -4,11 +4,16 @@ import main.controllers.ConfigureSystemParametersController;
 import main.controllers.SalesLogController;
 import main.controllers.TicketManagementController;
 import main.controllers.VendorManagementController;
+import main.dao.impl.SystemConfigDAOImpl;
 import main.db.SQLiteConnection;
+import main.util.SystemConfig;
 import main.util.UserInputGetCollection;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 
 public class Main {
@@ -18,6 +23,11 @@ public class Main {
 
     // Database connection
     private final Connection connection = SQLiteConnection.getInstance().getConnection();
+
+    // Initialize ScheduledExecutorService
+    private final ScheduledExecutorService executorServiceSystemConfig = Executors.newScheduledThreadPool(1);
+
+    private final SystemConfigDAOImpl systemConfigDAO = new SystemConfigDAOImpl();
 
     // 1. Configure System Parameters
     private final ConfigureSystemParametersController configureSystemParametersController = new ConfigureSystemParametersController();
@@ -52,11 +62,15 @@ public class Main {
             boolean dbConnection = main.connection != null && !main.connection.isClosed();
             System.out.println(dbConnection ? "Database connected successfully." : "Database connection failed.");
             exit = dbConnection;
+            main.systemConfigDAO.updateConfigValue("cli_status", 1);
 
         } catch (SQLException e) {
             exit = false;
             System.out.println(e.getMessage());
         }
+
+        main.executorServiceSystemConfig.scheduleAtFixedRate(
+                new SystemConfig(main), 0, 5, TimeUnit.SECONDS);
 
         while (exit) {
             System.out.println();
@@ -68,13 +82,30 @@ public class Main {
                     exit = !main.userInputGetCollection.getUserInputString(
                             "Are you sure you want to exit? (y/n):> ")
                             .equalsIgnoreCase("y");
-//                    if (!exit) main.ticketManagementController.stopSystem();
-//                    try {
-//                        main.connection.close();
-//
-//                    } catch (SQLException e) {
-//                        System.out.println("DB connection failed.\n" + e.getMessage());
-//                    }
+                    try {
+                        if (!exit) {
+                            main.systemConfigDAO.updateConfigValue("cli_status", 0);
+                            main.ticketManagementController.stopSystem();
+
+                            // Add a shutdown hook to gracefully stop the executor service
+                            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+                                main.executorServiceSystemConfig.shutdown();
+                                try {
+                                    if (!main.executorServiceSystemConfig.awaitTermination(5, TimeUnit.SECONDS)) {
+                                        main.executorServiceSystemConfig.shutdownNow();
+                                    }
+
+                                } catch (InterruptedException e) {
+                                    main.executorServiceSystemConfig.shutdownNow();
+                                }
+                            }));
+
+                            main.connection.close();
+                        }
+
+                    } catch (SQLException e) {
+                        System.out.println("DB connection failed.\n" + e.getMessage());
+                    }
                     break;
 
                 case 1:     // 1. Configure System Parameters
@@ -99,4 +130,9 @@ public class Main {
             }
         }
     }
+
+    public TicketManagementController getTicketManagementController() {
+        return ticketManagementController;
+    }
+
 }

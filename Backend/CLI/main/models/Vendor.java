@@ -1,9 +1,7 @@
 package main.models;
 
-import main.controllers.TicketManagementController;
 import main.dao.impl.SalesLogDAOImpl;
 import main.dao.impl.SystemConfigDAOImpl;
-
 import java.sql.SQLException;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -14,51 +12,42 @@ public class Vendor implements Runnable {
     private String vendorName;
     private int ticketsPerRelease;
     private int releaseRateSec;
+    private TicketPool ticketPool;
     private final SystemConfigDAOImpl configDAO = new SystemConfigDAOImpl();
 
 
     @Override
     public void run() {
         try {
-            if (configDAO.findConfigValue("system_status") == 1 ) {
+            if (configDAO.findConfigValue("system_status") == 1) {
                 checkVendorDetails();
 
-                TicketPool.getInstance().reloadSetMaxCapacity();
-                TicketPool.getInstance().reloadSetTotalTickets();
+                ticketPool.reloadSetMaxCapacity();
+                ticketPool.reloadSetTotalTickets();
 
                 if (TicketPool.getInstance().addTickets(ticketsPerRelease)) {
                     new SalesLogDAOImpl().addLog("Add " + ticketsPerRelease +
                             " tickets into ticket pool [ID - " + id + "] Vendor " + vendorName);
                 }
-
-            } else {
-                new TicketManagementController().stopSystem();
             }
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 
     // Method to start vendor's periodic ticket release
-    public void start(ScheduledExecutorService executorService) throws SQLException {
+    public void start(ScheduledExecutorService executorService, TicketPool ticketPool) throws SQLException {
         checkVendorDetails();
-        int globuleReleaseRateSec = configDAO.findConfigValue("ticket_release_rate");
-        executorService.scheduleAtFixedRate(this, 0,
-                Math.max(globuleReleaseRateSec, releaseRateSec), TimeUnit.SECONDS);
+        this.ticketPool = ticketPool;
+        executorService.scheduleAtFixedRate(this, 0, releaseRateSec, TimeUnit.SECONDS);
     }
 
     private void checkVendorDetails() throws SQLException {
         if (id == 0 || vendorName == null || ticketsPerRelease == 0 || releaseRateSec == 0) {
-            throw new IllegalStateException("Before start or run vendor setup vendor details");
+            throw new IllegalStateException("Before start or run vendor, setup vendor details");
         }
-        
-        int globalTicketsPreRelease = configDAO.findConfigValue("ticket_release_rate");
-        if (globalTicketsPreRelease > releaseRateSec) {
-            setReleaseRateSec(globalTicketsPreRelease);
-        }
+        setReleaseRateSec(Math.max(configDAO.findConfigValue("ticket_release_rate"), releaseRateSec));
     }
 
     // Nun argument constructor
@@ -73,6 +62,7 @@ public class Vendor implements Runnable {
         this.releaseRateSec = releaseRateSec;
     }
 
+    // Custom constructor (without ID)
     public Vendor(String vendorName, int ticketsPerRelease, int releaseRateSec) {
         this.vendorName = vendorName;
         this.ticketsPerRelease = ticketsPerRelease;

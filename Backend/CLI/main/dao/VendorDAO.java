@@ -11,4 +11,5 @@ public interface VendorDAO {
     Vendor getVendor(int vendorId);
     List<Vendor> getAllVendors();
     boolean existsVendor(int vendorId);
+    int getVendorCount();
 }
