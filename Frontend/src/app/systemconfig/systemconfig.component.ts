@@ -16,13 +16,16 @@ import {NgIf} from '@angular/common';
 export class SystemconfigComponent implements OnInit {
 
   protected systemStatus: string = 'System Stop';
-  protected cliStatus: string = 'System Stop';
+  protected cliStatus: string = 'CLI Stop';
   private intervalId: any;
   protected totalTickets: number = 0;
   protected ticketReleaseRate: number = 0;
   protected customerRetrievalRate: number = 0;
   protected maxTicketCapacity: number = 0;
-  protected showAlert: boolean = false;
+  protected showAlertSuccess: boolean = false;
+  protected alertMgSuccess: string = '';
+  protected showAlertDanger: boolean = false;
+  protected alertMgDanger: string = '';
   protected systemStatusColor: string = '';
   protected cliStatusColor: string = '';
   protected statusColorForStop: string = '#d50808';
@@ -71,19 +74,67 @@ export class SystemconfigComponent implements OnInit {
   });
 
   updateData(): void {
-    this.http.patch<any>('http://localhost:8080/api/v1/configuresystemparameters/update', {
-      total_tickets: this.form.get('totalTickets')?.value,
-      ticket_release_rate: this.form.get('ticketReleaseRate')?.value,
-      customer_retrieval_rate: this.form.get('customerRetrievalRate')?.value,
-      max_ticket_capacity: this.form.get('maxTicketCapacity')?.value
-    }).subscribe(res => {
-      if (res && res.status === 200) {
-        this.showAlert = true; // Show the success alert
-        setTimeout(() => {
-          this.showAlert = false; // Hide the alert after 3 seconds
-        }, 3000);
-      }
-    });
+    if (this.cliStatus === 'CLI Stop') {
+      this.http.patch<any>('http://localhost:8080/api/v1/configuresystemparameters/update', {
+        total_tickets: this.form.get('totalTickets')?.value,
+        ticket_release_rate: this.form.get('ticketReleaseRate')?.value,
+        customer_retrieval_rate: this.form.get('customerRetrievalRate')?.value,
+        max_ticket_capacity: this.form.get('maxTicketCapacity')?.value
+      }).subscribe(res => {
+        if (res && res.status === 200) {
+          this.showSuccessAlert('Save data successfully');
+        }
+      });
+
+    } else {
+      this.showDangerAlert('CLI should be stop for this operation')
+    }
+  }
+
+  // startSystem(): void {
+  //   if (this.cliStatus === 'CLI running') {
+  //     this.http.patch<any>('http://localhost:8080/api/v1/configuresystem/update', {
+  //       system_status: 2
+  //     }).subscribe(res => {
+  //       if (res && res.status === 200) {
+  //         this.showSuccessAlert('System start successfully');
+  //       }
+  //     });
+  //
+  //   } else {
+  //     this.showDangerAlert('CLI is not running');
+  //   }
+  // }
+  //
+  // stopSystem(): void {
+  //   if (this.cliStatus === 'CLI running') {
+  //     this.http.patch<any>('http://localhost:8080/api/v1/configuresystem/update', {
+  //       system_status: 1
+  //     }).subscribe(res => {
+  //       if (res && res.status === 200) {
+  //         this.showSuccessAlert('System stop successfully');
+  //       }
+  //     });
+  //
+  //   } else {
+  //     this.showDangerAlert('CLI is not running');
+  //   }
+  // }
+
+  showDangerAlert(mg: string): void {
+    this.alertMgDanger = mg;
+    this.showAlertDanger = true; // Show the danger alert
+    setTimeout(() => {
+      this.showAlertDanger = false; // Hide the alert after 3 seconds
+    }, 3000);
+  }
+
+  showSuccessAlert(mg: string): void {
+    this.alertMgSuccess = mg;
+    this.showAlertSuccess = true; // Show the success alert
+    setTimeout(() => {
+      this.showAlertSuccess = false; // Hide the alert after 3 seconds
+    }, 3000);
   }
 
   ngOnDestroy(): void {

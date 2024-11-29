@@ -1,20 +1,32 @@
 <div class="container text-center mt-5">
 
-  <div class="alert alert-success" role="alert" *ngIf="showAlert">
-    Save data successfully
+  <div class="alert alert-success" role="alert" *ngIf="showAlertSuccess">
+    {{ alertMgSuccess }}
+  </div>
+
+  <div class="alert alert-danger" role="alert" *ngIf="showAlertDanger">
+    {{ alertMgDanger }}
   </div>
 
   <div class="row mb-3">
     <div class="col">
       <!-- Circle Section -->
-      <div style="background-color:{{ systemStatusColor }}" class="circle mx-auto mb-5">
-        <span class="text-white font-weight-bold">{{ systemStatus }}</span>
-      </div>
-    </div>
-    <div class="col">
-      <!-- Circle Section -->
       <div style="background-color:{{ cliStatusColor }}" class="circle mx-auto mb-5">
         <span class="text-white font-weight-bold">{{ cliStatus }}</span>
+      </div>
+    </div>
+
+<!--    <div class="col">-->
+<!--      <div class="row">-->
+<!--        <div class="col"><button class="btn btn-primary" (click)="startSystem()" >Start System</button></div>-->
+<!--        <div class="col"><button class="btn btn-primary" (click)="stopSystem()">Stop System</button></div>-->
+<!--      </div>-->
+<!--    </div>-->
+
+    <div class="col">
+      <!-- Circle Section -->
+      <div style="background-color:{{ systemStatusColor }}" class="circle mx-auto mb-5">
+        <span class="text-white font-weight-bold">{{ systemStatus }}</span>
       </div>
     </div>
   </div>
