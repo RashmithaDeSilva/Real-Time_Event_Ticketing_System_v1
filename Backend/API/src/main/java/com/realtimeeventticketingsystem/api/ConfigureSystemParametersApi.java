@@ -27,17 +27,6 @@ public class ConfigureSystemParametersApi {
                 systemConfigureService.findAllConfig()), HttpStatus.OK);
     }
 
-    // Get total tickets
-    @GetMapping("/totaltickets")
-    public ResponseEntity<StandardResponse> getTotalTickets() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("total_tickets", systemConfigureService.findConfigValue("total_tickets"));
-
-        return new ResponseEntity<>(new StandardResponse(200,
-                "Total Tickets Status",
-                data), HttpStatus.OK);
-    }
-
     // Update configure system parameters
     @PatchMapping("/update")
     public ResponseEntity<StandardResponse> updateSystemConfigs(

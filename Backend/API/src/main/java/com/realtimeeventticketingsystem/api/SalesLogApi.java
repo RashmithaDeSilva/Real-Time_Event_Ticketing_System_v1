@@ -19,8 +19,8 @@ public class SalesLogApi {
     private final SalesLogService salesLogService;
 
     // Get customer list
-    @GetMapping("/")
-    public ResponseEntity<StandardResponse> findAll(
+    @GetMapping("/search")
+    public ResponseEntity<StandardResponse> findAllWithText(
             @RequestParam String search_text,
             @RequestParam int page,
             @RequestParam int size
@@ -28,5 +28,16 @@ public class SalesLogApi {
         return new ResponseEntity<>(new StandardResponse(200,
                 "Successfully search Sales Logs",
                 salesLogService.findAll(search_text, page, size)), HttpStatus.OK);
+    }
+
+    // Get customer list
+    @GetMapping("/")
+    public ResponseEntity<StandardResponse> findAllWithoutText(
+            @RequestParam int page,
+            @RequestParam int size
+    ){
+        return new ResponseEntity<>(new StandardResponse(200,
+                "Successfully search Sales Logs",
+                salesLogService.findAll(page, size)), HttpStatus.OK);
     }
 }

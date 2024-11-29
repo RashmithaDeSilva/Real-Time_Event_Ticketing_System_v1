@@ -99,8 +99,8 @@ public class Main {
                                     main.executorServiceSystemConfig.shutdownNow();
                                 }
                             }));
-
                             main.connection.close();
+                            System.exit(0);
                         }
 
                     } catch (SQLException e) {

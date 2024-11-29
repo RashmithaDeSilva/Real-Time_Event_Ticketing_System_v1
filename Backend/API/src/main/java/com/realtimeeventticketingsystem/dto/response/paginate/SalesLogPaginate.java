@@ -11,6 +11,6 @@ import java.util.List;
 @Setter
 @Builder
 public class SalesLogPaginate {
-    private long count;
+    private long log_count;
     private List<ResponseSalesLogDto> data_list;
 }

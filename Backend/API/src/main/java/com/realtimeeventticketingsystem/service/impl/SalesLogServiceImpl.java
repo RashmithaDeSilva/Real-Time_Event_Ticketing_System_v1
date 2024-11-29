@@ -22,7 +22,16 @@ public class SalesLogServiceImpl implements SalesLogService {
         return SalesLogPaginate.builder()
                 .data_list(salesLogRepo.findAllWithSearchText(searchText, PageRequest.of(page, size))
                         .stream().map(this::getResponseSalesLogDto).toList())
-                .count(salesLogRepo.countAllWithSearchText(searchText))
+                .log_count(salesLogRepo.countAllWithSearchText(searchText))
+                .build();
+    }
+
+    @Override
+    public SalesLogPaginate findAll(int page, int size) {
+        return SalesLogPaginate.builder()
+                .data_list(salesLogRepo.findAllWithoutSearchText(PageRequest.of(page, size))
+                        .stream().map(this::getResponseSalesLogDto).toList())
+                .log_count(salesLogRepo.countAllWithSearchText(""))
                 .build();
     }
 

@@ -15,14 +15,16 @@ import {NgIf} from '@angular/common';
 })
 export class SystemconfigComponent implements OnInit {
 
-  protected status: string = 'System Stop';
+  protected systemStatus: string = 'System Stop';
+  protected cliStatus: string = 'System Stop';
   private intervalId: any;
   protected totalTickets: number = 0;
   protected ticketReleaseRate: number = 0;
   protected customerRetrievalRate: number = 0;
   protected maxTicketCapacity: number = 0;
   protected showAlert: boolean = false;
-  protected statusColor: string = '';
+  protected systemStatusColor: string = '';
+  protected cliStatusColor: string = '';
   protected statusColorForStop: string = '#d50808';
   protected statusColorForRun: string = '#33a807';
 
@@ -40,8 +42,11 @@ export class SystemconfigComponent implements OnInit {
     this.http.get<any>('http://localhost:8080/api/v1/configuresystem/status')
       .subscribe(res => {
         if (res && res.status === 200) {
-          this.status = res.data.system_status === 1 ? "System running" : "System Stop";
-          this.statusColor = res.data.system_status === 1 ? this.statusColorForRun : this.statusColorForStop;
+          this.systemStatus = res.data.system_status === 1 ? "System running" : "System Stop";
+          this.systemStatusColor = res.data.system_status === 1 ? this.statusColorForRun : this.statusColorForStop;
+
+          this.cliStatus = res.data.cli_status === 1 ? "CLI running" : "CLI Stop";
+          this.cliStatusColor = res.data.cli_status === 1 ? this.statusColorForRun : this.statusColorForStop;
         }
       });
   }

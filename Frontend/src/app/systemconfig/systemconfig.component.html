@@ -4,9 +4,19 @@
     Save data successfully
   </div>
 
-  <!-- Circle Section -->
-  <div style="background-color: {{ statusColor }}" class="circle mx-auto mb-4">
-    <span class="text-white font-weight-bold">{{ status }}</span>
+  <div class="row mb-3">
+    <div class="col">
+      <!-- Circle Section -->
+      <div style="background-color:{{ systemStatusColor }}" class="circle mx-auto mb-5">
+        <span class="text-white font-weight-bold">{{ systemStatus }}</span>
+      </div>
+    </div>
+    <div class="col">
+      <!-- Circle Section -->
+      <div style="background-color:{{ cliStatusColor }}" class="circle mx-auto mb-5">
+        <span class="text-white font-weight-bold">{{ cliStatus }}</span>
+      </div>
+    </div>
   </div>
 
   <!-- Status Row -->

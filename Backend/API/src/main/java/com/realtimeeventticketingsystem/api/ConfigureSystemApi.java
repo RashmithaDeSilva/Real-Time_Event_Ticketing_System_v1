@@ -24,6 +24,7 @@ public class ConfigureSystemApi {
     public ResponseEntity<StandardResponse> systemStatus() {
         Map<String, Object> data = new HashMap<>();
         data.put("system_status", systemConfigureService.findConfigValue("system_status"));
+        data.put("cli_status", systemConfigureService.findConfigValue("cli_status"));
 
         return new ResponseEntity<>(new StandardResponse(200,
                 "Configure System Status",
