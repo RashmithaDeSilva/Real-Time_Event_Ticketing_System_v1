@@ -1,119 +1,129 @@
 # Real-Time Event Ticketing System
 
-## 1. Overview of the System
-The Real-Time Event Ticketing System manages ticket sales in real time, simulating interactions between vendors **(producers)** and customers **(consumers)**. It includes features like ticket availability management, real-time updates, and support for multiple vendors and ticket types.
+## Project Overview
+The Real-Time Event Ticketing System is a multi-component application designed for efficient ticket management using a command-line interface (CLI), a backend API built with Spring Boot, and a front-end application developed in Angular. This system allows vendors and customers to interact with the ticketing system in real-time, leveraging multi-threading and concurrency to ensure optimal performance.
 
-## 2. Component Roles
+Key features include:
+* Multi-threaded vendor and customer simulation.
+* VIP customer prioritization for higher access priority.
+* SQLite database integration for persistence.
+* Dynamic configuration of system parameters via CLI.
+* API backend for real-time data management.
+* Angular front-end for visualization and user management.
 
-### Command-Line Interface (CLI)
-**Purpose**: Primarily used by system administrators for configuration and monitoring.
+<hr>
 
-- **Functions**:
-  - **System Configuration**: Set up parameters like total ticket count and ticket release frequency.
-  - **Manage Vendors**: Add or remove vendors.
-  - **Manage Ticket Types**: Define ticket types (e.g., VIP, General Admission) with specific prices.
-  - **Monitor Real-Time Status**: View current ticket inventory by vendor and type.
-  - **Sales Log**: Review past sales, tracking ticket purchases.
+## System Components
+### 1. Command-Line Interface (CLI)
+The CLI is a core component that provides direct interaction with the system.
 
-### Frontend (User Interface)
-**Purpose**: Provides a graphical interface for customers and admins. Customers can buy tickets, while admins monitor the system.
+Main Menu
+```java
+===== Real-Time Event Ticketing System =====
+1. Configure System Parameters
+2. Vendors Management
+3. Ticket Management
+4. View Sales Log
+0. Exit
+============================================
+```
 
-- **Functions**:
-  - **Display Ticket Availability**: Real-time updates on available tickets.
-  - **Admin Control Panel**: Start/stop ticket release and adjust system settings.
-  - **Real-Time Notifications**: Inform customers about ticket status and sales.
-  - **Purchase Tickets**: Customers can buy tickets directly through the interface.
+Submenus
+1. Configure System Parameters
+   * Manage vendors dynamically, with options to add, update, or remove
+   ```java
+   ===== Manage Vendors =====
+   1. Show All Vendors
+   2. Add Vendor
+   3. Update Vendor
+   4. Remove Vendor
+   5. Back to Main Menu
+   ===========================================
+   ```
+2. Vendors Management
+   * Manage vendors dynamically, with options to add, update, or remove
+   ```java
+   ===== Manage Vendors =====
+   1. Show All Vendors
+   2. Add Vendor
+   3. Update Vendor
+   4. Remove Vendor
+   5. Back to Main Menu
+   ===========================================
+   ```
+3. Ticket Management
+   * Monitor and control the ticketing system operations
+   ```java
+   ===== Ticket Management =====
+   1. Show Status
+   2. Start System
+   3. Stop System
+   4. Restart System
+   5. Back to Main Menu
+   ===========================================
+   ```
+4. Sales Log
+   * View real-time transaction logs of ticket sales.
 
-### API (Backend Logic and Database Interaction)
-**Purpose**: Handles core operations, connecting the frontend and CLI to the database and managing real-time ticket handling.
+### 2. API (Spring Boot)
+The Spring Boot API acts as the backend layer, handling:
+* Integration with SQLite database for storing vendors, customers, and tickets.
+* RESTful endpoints for system management and real-time data retrieval.
+* Synchronization of CLI and front-end interactions.
 
-- **Functions**:
-  - **Producer-Consumer Pattern**: Manages ticket addition (producers) and sales (consumers) with real-time updates.
-  - **Thread Safety**: Supports multiple vendors and customers, ensuring safe multi-threaded operations.
-  - **Database Operations**: Add, update, and retrieve data for tickets, sales, vendors, and customers.
+### 3. Front-End (Angular)
+The Angular-based front-end provides:
+* A user-friendly interface to visualize ticket availability, sales logs, and system statistics.
+* Real-time updates from the backend.
+* Vendor and customer management tools.
 
-### Database
-**Purpose**: Stores essential information on vendors, tickets, and sales, supporting both real-time operations and historical data.
+<hr>
 
-- **Tables**:
-  - **Vendors Table**: Holds vendor details like name and release rate.
-  - **Tickets Table**: Tracks ticket information, availability, and vendor association.
-  - **Sales Log Table**: Logs each sale, tracking ticket ID, customer info, and timestamp.
+## Key Features
+### Multi-threading and Concurrency
+* Each vendor and customer operates in a separate thread.
+* VIP customers are prioritized using a custom queuing mechanism.
+* Thread-safe operations are implemented using synchronized methods and thread-safe collections.
 
-## 3. Component Interactions
+### SQLite Database Integration
+* Persistent storage of vendor, customer, and ticket data.
+* Automatic runtime updates:
+   * Vendors added or removed from the database are reflected dynamically in the running system.
 
-1. **System Setup (CLI and API)**:
-   - Admins use the CLI to configure vendors, ticket types, and system settings. This data is saved in the Database via the API.
-  
-2. **Ticket Handling (API and Database)**:
-   - The API manages ticket release (by vendors) and purchase (by customers) using multi-threading and synchronization for error-free operations.
+### Dynamic Configuration
+* Parameters such as ticket release rate and maximum ticket capacity can be updated at runtime via the CLI.
 
-3. **Real-Time Updates (Frontend, API, and Database)**:
-   - The Frontend shows real-time ticket availability by querying the API, which updates the Database.
+<hr>
 
-4. **Sales Logging (API and Database)**:
-   - Every sale is logged by the API in the Sales Log Table, viewable through the CLI or Frontend.
+## Installation and Setup
+<b>Prerequisites</b>
+* Java 21+
+* Node.js 18+
+* Angular CLI
+* SQLite
 
-## 4. Example Workflow
+<hr>
 
-1. **Admin Setup (CLI)**:
-   - Admins configure vendors and ticket types via CLI (e.g., Vendor A with VIP tickets, Vendor B with General Admission).
-   - Configuration details are saved to the Database.
+## Usage
+### CLI
+* Access the main menu to manage configurations, vendors, ticketing operations, and logs.
+* Start or stop the ticketing system and monitor real-time status updates.
 
-2. **Customer Purchase (Frontend)**:
-   - A customer selects a VIP ticket and submits a purchase request.
-   - The API processes this, updating ticket availability and logging the sale.
+### API
+* Use RESTful endpoints for integration or management tasks.
+* Refer to the API Documentation for detailed endpoint descriptions.
 
-3. **Real-Time Status Check (CLI/Frontend)**:
-   - Admins can view real-time ticket status in the CLI, and customers see updated availability on the frontend.
+### Front-End
+* Access the Angular application at http://localhost:4200.
+* Manage vendors, visualize ticket availability, and view logs
 
-## 5. Key Relationships
+<hr>
 
-- **Vendors and Tickets**: Each vendor is associated with specific ticket types.
-- **Tickets and Sales Log**: Each sale entry links to a specific ticket.
-- **API and Database**: The API manages ticket inventory, sales, and interactions, keeping all components synchronized.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+## Technologies Used
+* Java: Core application logic and CLI.
+* Spring Boot: Backend API development.
+* Angular: Front-end user interface.
+* SQLite: Persistent database storage.
+* Multi-threading: Vendor and customer simulation.
 
 

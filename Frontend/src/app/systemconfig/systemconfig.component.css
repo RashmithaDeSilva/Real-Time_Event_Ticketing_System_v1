@@ -17,3 +17,14 @@
     height: 80px;
   }
 }
+
+.fm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.bx {
+  width: 500px;
+}
