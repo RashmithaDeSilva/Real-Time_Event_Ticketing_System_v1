@@ -1,8 +1,76 @@
-/Backend/CLI/.idea/
-/Backend/CLI/out/
-/Backend/CLI/CLI.iml
+Backend/API/BHELP.md
+Backend/API/target/
+Backend/API/!.mvn/wrapper/maven-wrapper.jar
+Backend/API/!**/src/main/**/target/
+Backend/API/!**/src/test/**/target/
 
-# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+### STS ###
+Backend/API/.apt_generated
+Backend/API/.classpath
+Backend/API/.factorypath
+Backend/API/.project
+Backend/API/.settings
+Backend/API/.springBeans
+Backend/API/.sts4-cache
+
+### IntelliJ IDEA ###
+Backend/API/.idea
+Backend/API/*.iws
+Backend/API/*.iml
+Backend/API/*.ipr
+
+### NetBeans ###
+Backend/API/nbproject/private/
+Backend/API/nbbuild/
+Backend/API/dist/
+Backend/API/nbdist/
+Backend/API/.nb-gradle/
+Backend/API/build/
+Backend/API/!**/src/main/**/build/
+Backend/API/!**/src/test/**/build/
+
+### VS Code ###
+Backend/API/.vscode/
+
+
+
+
+Backend/CLI/BHELP.md
+Backend/CLI/target/
+Backend/CLI/!.mvn/wrapper/maven-wrapper.jar
+Backend/CLI/!**/src/main/**/target/
+Backend/CLI/!**/src/test/**/target/
+
+### STS ###
+Backend/CLI/.apt_generated
+Backend/CLI/.classpath
+Backend/CLI/.factorypath
+Backend/CLI/.project
+Backend/CLI/.settings
+Backend/CLI/.springBeans
+Backend/CLI/.sts4-cache
+
+### IntelliJ IDEA ###
+Backend/CLI/.idea
+Backend/CLI/*.iws
+Backend/CLI/*.iml
+Backend/CLI/*.ipr
+
+### NetBeans ###
+Backend/CLI/nbproject/private/
+Backend/CLI/nbbuild/
+Backend/CLI/dist/
+Backend/CLI/nbdist/
+Backend/CLI/.nb-gradle/
+Backend/CLI/build/
+Backend/CLI/!**/src/main/**/build/
+Backend/CLI/!**/src/test/**/build/
+
+### VS Code ###
+Backend/CLI/.vscode/
+
+
+# See https:/docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 # Compiled output
 /Frontend/dist
@@ -12,37 +80,80 @@
 
 # Node
 /Frontend/node_modules
-/Frontendnpm-debug.log
-/Frontendyarn-error.log
+/Frontend/npm-debug.log
+/Frontend/yarn-error.log
 
 # IDEs and editors
-/Frontend.idea/
-/Frontend.project
-/Frontend.classpath
-/Frontend.c9/
-/Frontend*.launch
-/Frontend.settings/
-/Frontend*.sublime-workspace
+/Frontend/.idea/
+/Frontend/.project
+/Frontend/.classpath
+/Frontend/.c9/
+/Frontend/*.launch
+/Frontend/.settings/
+/Frontend/*.sublime-workspace
 
 # Visual Studio Code
-/Frontend.vscode/*
-/Frontend!.vscode/settings.json
-/Frontend!.vscode/tasks.json
-/Frontend!.vscode/launch.json
-/Frontend!.vscode/extensions.json
-/Frontend.history/*
+/Frontend/.vscode/*
+/Frontend/!.vscode/settings.json
+/Frontend/!.vscode/tasks.json
+/Frontend/!.vscode/launch.json
+/Frontend/!.vscode/extensions.json
+/Frontend/.history/*
 
 # Miscellaneous
 /Frontend/.angular/cache
-/Frontend.sass-cache/
+/Frontend/.sass-cache/
 /Frontend/connect.lock
 /Frontend/coverage
 /Frontend/libpeerconnection.log
-/Frontendtestem.log
+/Frontend/testem.log
 /Frontend/typings
 
 # System files
-/Frontend.DS_Store
-/FrontendThumbs.db
+/Frontend/.DS_Store
+/Frontend/Thumbs.db
+
+
+
+# Compiled output
+/Frontend/-v2/dist
+/Frontend/-v2/tmp
+/Frontend/-v2/out-tsc
+/Frontend/-v2/bazel-out
+
+# Node
+/Frontend-v2/node_modules
+/Frontend-v2/npm-debug.log
+/Frontend-v2/yarn-error.log
+
+# IDEs and editors
+/Frontend-v2/.idea/
+/Frontend-v2/.project
+/Frontend-v2/.classpath
+/Frontend-v2/.c9/
+/Frontend-v2/*.launch
+/Frontend-v2/.settings/
+/Frontend-v2/*.sublime-workspace
+
+# Visual Studio Code
+/Frontend-v2/.vscode/*
+/Frontend-v2/!.vscode/settings.json
+/Frontend-v2/!.vscode/tasks.json
+/Frontend-v2/!.vscode/launch.json
+/Frontend-v2/!.vscode/extensions.json
+/Frontend-v2/.history/*
+
+# Miscellaneous
+/Frontend-v2/.angular/cache
+/Frontend-v2/.sass-cache/
+/Frontend-v2/connect.lock
+/Frontend-v2/coverage
+/Frontend-v2/libpeerconnection.log
+/Frontend-v2/testem.log
+/Frontend-v2/typings
+
+# System files
+/Frontend-v2/.DS_Store
+/Frontend-v2/Thumbs.db
 
 
