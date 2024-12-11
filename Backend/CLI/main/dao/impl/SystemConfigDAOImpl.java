@@ -25,6 +25,7 @@ public class SystemConfigDAOImpl implements SystemConfigDAO {
             insertDefaultInputs("customer_retrieval_rate", 60);
             insertDefaultInputs("max_ticket_capacity", 500);
             insertDefaultInputs("system_status", 0);
+            insertDefaultInputs("cli_status", 0);
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
